@@ -61,6 +61,7 @@ reg('Timeline', () => import('./Timeline'));
 reg('CarouselCards', () => import('./CarouselCards'));
 reg('TrioColumns', () => import('./TrioColumns'));
 reg('ProcessFlow', () => import('./ProcessFlow'));
+reg('GridView', () => import('./GridView'));
 
 // ─── Specialized ────────────────────────────────────────────────────────────
 reg('ProfileRoster', () => import('./ProfileRoster'));
@@ -68,7 +69,112 @@ reg('StatusList', () => import('./StatusList'));
 reg('NumberedList', () => import('./NumberedList'));
 reg('MeetingScheduler', () => import('./MeetingScheduler'));
 
-// ─── Custom client components ───────────────────────────────────────────────
+// ─── Scene-Optimized (dark backgrounds) ─────────────────────────────────────
+reg('KPICard', () => import('./KPICard'));
+reg('MetricCard', () => import('./MetricCard'));
+reg('DonutChart', () => import('./DonutChart'));
+reg('SceneCard', () => import('./SceneCard'));
+
+// ─── Scene Cards (ported from small lift) ────────────────────────────────────
+
+// Core Data
+reg('stat', () => import('./StatCard'));
+reg('kpi-strip', () => import('./KPIStrip'));
+reg('metric-list', () => import('./MetricList'));
+reg('alert', () => import('./AlertCard'));
+reg('text', () => import('./TextCard'));
+reg('split-stat', () => import('./SplitStat'));
+reg('table', () => import('./TableCard'));
+reg('info-card', () => import('./InfoCard'));
+reg('bullet-list', () => import('./BulletListCard'));
+
+// Charts & Visualization
+reg('bar-chart', () => import('./SceneBarChart'));
+reg('line-chart', () => import('./SceneLineChart'));
+reg('donut', () => import('./SceneDonutChart'));
+reg('heatmap', () => import('./HeatmapCard'));
+reg('waterfall', () => import('./WaterfallCard'));
+reg('scatter-plot', () => import('./ScatterPlot'));
+reg('gauge', () => import('./GaugeCard'));
+reg('stacked-bar', () => import('./StackedBarCard'));
+reg('funnel', () => import('./FunnelCard'));
+
+// People & Organization
+reg('person-card', () => import('./PersonCard'));
+reg('org-roster', () => import('./OrgRoster'));
+reg('comparison-profile', () => import('./ComparisonProfile'));
+reg('stakeholder-map', () => import('./StakeholderMap'));
+reg('team-kpi', () => import('./TeamKPI'));
+
+// Rich Content
+reg('callout', () => import('./CalloutCard'));
+reg('quote-card', () => import('./QuoteCard'));
+reg('image-card', () => import('./ImageCard'));
+reg('briefing', () => import('./BriefingCard'));
+
+// Geo & Comparison
+reg('world-map', () => import('./WorldMapCard'));
+reg('comparison-table', () => import('./ComparisonTableCard'));
+reg('ranked-list', () => import('./RankedListCard'));
+reg('status-grid', () => import('./StatusGridCard'));
+reg('country-card', () => import('./CountryCard'));
+
+// Operational
+reg('incident-card', () => import('./IncidentCard'));
+reg('pipeline-card', () => import('./PipelineCard'));
+reg('risk-matrix', () => import('./RiskMatrixCard'));
+reg('mini-dashboard', () => import('./MiniDashboardCard'));
+reg('data-cluster', () => import('./DataClusterCard'));
+
+// Live Data
+reg('weather', () => import('./WeatherCard'));
+reg('traffic', () => import('./TrafficCard'));
+reg('stock', () => import('./StockCard'));
+reg('news-feed', () => import('./NewsFeedCard'));
+// reg('live-map', () => import('./LiveMapCard'));  // DEFERRED: needs react-simple-maps
+
+// Email, Calendar & Travel
+reg('event-card', () => import('./EventCard'));
+reg('email-card', () => import('./EmailCard'));
+reg('email-list', () => import('./EmailListCard'));
+reg('trip-card', () => import('./TripCard'));
+
+// Executive Action
+reg('decision-card', () => import('./DecisionCard'));
+reg('approval-card', () => import('./ApprovalCard'));
+reg('delegation-card', () => import('./DelegationCard'));
+
+// Cross-Domain
+reg('vote-card', () => import('./VoteCard'));
+reg('relationship-card', () => import('./RelationshipCard'));
+reg('domino-card', () => import('./DominoCard'));
+reg('journal-entry', () => import('./JournalEntryCard'));
+
+// Scene-specific overrides (kebab-case versions for scene prompt)
+reg('checklist', () => import('./ChecklistCard'));
+reg('timeline', () => import('./TimelineCard'));
+
+// ─── Aliases (prompt compatibility & LLM hallucination resilience) ───────────
+reg('profile-roster', () => import('./OrgRoster'));
+reg('area-chart', () => import('./SceneLineChart'));
+reg('progress', () => import('./SceneBarChart'));
+reg('news-article', () => import('./NewsFeedCard'));
+
+// Common LLM hallucinations (e.g. "donut-chart" instead of "donut")
+reg('donut-chart', () => import('./SceneDonutChart'));
+reg('bar', () => import('./SceneBarChart'));
+reg('line', () => import('./SceneLineChart'));
+reg('stat-card', () => import('./StatCard'));
+reg('stats', () => import('./StatCard'));
+reg('kpi', () => import('./KPIStrip'));
+reg('kpi-card', () => import('./KPIStrip'));
+reg('metric', () => import('./MetricList'));
+reg('info', () => import('./InfoCard'));
+reg('text-card', () => import('./TextCard'));
+reg('checklist-card', () => import('./ChecklistCard'));
+reg('timeline-card', () => import('./TimelineCard'));
+
+// ─── Custom client components ────────────────────────────────────────────────
 // Client-specific components are added below this line.
 // The website builder agent or discovery service will append entries here.
 // Example:

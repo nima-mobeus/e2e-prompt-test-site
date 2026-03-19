@@ -87,6 +87,7 @@ function GenericFallback({ template, data }: { template: ComponentTemplate; data
  */
 export function DynamicComponentRenderer({ template, data }: DynamicComponentRendererProps) {
   const submitForm = useVoiceSessionStore((state) => state.submitForm);
+  const tellAgent = useVoiceSessionStore((state) => state.tellAgent);
 
   const mergedData = useMemo(() => {
     return mergeTemplateData(
@@ -110,10 +111,9 @@ export function DynamicComponentRenderer({ template, data }: DynamicComponentRen
     __templateId: template.id,
   } as Record<string, any>;
 
-  // onAction callback — sends action phrases back to the voice agent
+  // onAction callback — sends action phrases to the voice agent via tellAgent RPC
   const handleAction = (actionPhrase: string) => {
-    // Submit as a form action so the agent receives the interaction
-    submitForm(template.id, template.id, { action: actionPhrase });
+    tellAgent(actionPhrase);
   };
 
   // Look up in registry

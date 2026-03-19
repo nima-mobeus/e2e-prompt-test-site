@@ -18,7 +18,7 @@ export default function BarChart({ data, accentColor = '#2563eb' }: TeleComponen
   const bars: Array<{ label: string; value: number; color?: string }> = Array.isArray(data.bars) ? data.bars : [];
   const unit = (data.unit as string) || '';
   const showValues = data.showValues !== false;
-  const maxValue = typeof data.maxValue === 'number' ? data.maxValue : Math.max(...bars.map((b) => b.value), 1);
+  const maxValue = typeof data.maxValue === 'number' ? data.maxValue : Math.max(...bars.map((b) => b.value ?? 0), 1);
 
   if (bars.length === 0) return null;
 
