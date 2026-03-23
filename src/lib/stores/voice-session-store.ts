@@ -108,6 +108,7 @@ interface VoiceSessionState {
   sceneHistory: SceneData[];
   sceneFuture: SceneData[];
   sceneActive: boolean;
+  skeletonLayout: string | null;
 
   // Chat panel state
   isChatPanelOpen: boolean;
@@ -183,6 +184,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
   sceneHistory: [],
   sceneFuture: [],
   sceneActive: false,
+  skeletonLayout: null,
 
   // Chat panel
   isChatPanelOpen: false,
@@ -312,6 +314,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
       sceneHistory: [],
       sceneFuture: [],
       sceneActive: false,
+      skeletonLayout: null,
       // Reset avatar state
       avatarEnabled: false,
       avatarVisible: true,
@@ -540,6 +543,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
         sceneHistory: [],
         sceneFuture: [],
         sceneActive: false,
+        skeletonLayout: null,
         _preWarm: null,
         _preWarmState: 'idle',
       });
@@ -853,6 +857,7 @@ function setupRoomEventListeners(
         sceneHistory: [],
         sceneFuture: [],
         sceneActive: false,
+        skeletonLayout: null,
       });
     }
   });
@@ -1035,7 +1040,48 @@ function setupRoomEventListeners(
       sceneHistory: [],
       sceneFuture: [],
       sceneActive: false,
+      skeletonLayout: null,
     });
+  });
+
+  // DataReceived: handle UI Engine scene data (skeleton + full scene)
+  room.on(RoomEvent.DataReceived, (payload: Uint8Array, participant: RemoteParticipant | undefined, kind: unknown, topic: string | undefined) => {
+    if (topic !== 'ui-engine:scene') return;
+
+    try {
+      const message = JSON.parse(new TextDecoder().decode(payload));
+      console.log('DataReceived [ui-engine:scene]:', message.type, message);
+
+      if (message.type === 'skeleton') {
+        set({
+          skeletonLayout: message.layout || message.skeleton || null,
+          sceneActive: true,
+        });
+      } else if (message.type === 'scene') {
+        const sceneData: SceneData = {
+          id: message.id || `scene-${Date.now()}`,
+          badge: message.badge,
+          title: message.title,
+          subtitle: message.subtitle,
+          layout: message.layout,
+          cards: message.cards || [],
+          maxRows: message.maxRows,
+          footerLeft: message.footerLeft,
+          footerRight: message.footerRight,
+          timestamp: new Date(),
+        };
+
+        set((state) => ({
+          currentScene: sceneData,
+          skeletonLayout: null,
+          sceneActive: true,
+          sceneHistory: state.currentScene ? [...state.sceneHistory, state.currentScene] : state.sceneHistory,
+          sceneFuture: [],
+        }));
+      }
+    } catch (err) {
+      console.error('Error parsing ui-engine:scene data:', err);
+    }
   });
 
   // Check for existing agent participants
